@@ -6,139 +6,456 @@
   <title>World's Best Girlfriend Award</title>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #ffe4ec, #fff7d6);
+      min-height: 100vh;
+      font-family: "Trebuchet MS", "Arial", sans-serif;
+      overflow-x: hidden;
+      overflow-y: auto;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,0.45), transparent 30%),
+        radial-gradient(circle at top right, rgba(255,255,255,0.35), transparent 25%),
+        linear-gradient(135deg, #ff7eb3 0%, #ff758c 25%, #ffb347 55%, #fff3a3 100%);
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
+      padding: 20px;
+      position: relative;
+    }
+
+    .background-glow {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.35), transparent 18%),
+        radial-gradient(circle at 80% 25%, rgba(255,255,255,0.25), transparent 18%),
+        radial-gradient(circle at 50% 80%, rgba(255,255,255,0.28), transparent 22%);
+      animation: pulseGlow 5s ease-in-out infinite;
+      z-index: 0;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.04); opacity: 1; }
+    }
+
+    .hearts {
+      position: fixed;
+      inset: 0;
       overflow: hidden;
-      padding: 15px;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -40px;
+      font-size: 22px;
+      animation: floatHeart linear infinite;
+      opacity: 0.85;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.12));
+    }
+
+    .heart:nth-child(1) { left: 6%; animation-duration: 9s; animation-delay: 0s; }
+    .heart:nth-child(2) { left: 18%; animation-duration: 11s; animation-delay: 2s; }
+    .heart:nth-child(3) { left: 30%; animation-duration: 8.5s; animation-delay: 1s; }
+    .heart:nth-child(4) { left: 42%; animation-duration: 10.5s; animation-delay: 3s; }
+    .heart:nth-child(5) { left: 56%; animation-duration: 9.5s; animation-delay: 1.5s; }
+    .heart:nth-child(6) { left: 68%; animation-duration: 12s; animation-delay: 0.5s; }
+    .heart:nth-child(7) { left: 80%; animation-duration: 8s; animation-delay: 2.5s; }
+    .heart:nth-child(8) { left: 92%; animation-duration: 10s; animation-delay: 1.2s; }
+
+    @keyframes floatHeart {
+      0% {
+        transform: translateY(0) translateX(0) scale(0.8) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.9;
+      }
+      100% {
+        transform: translateY(-120vh) translateX(30px) scale(1.25) rotate(20deg);
+        opacity: 0;
+      }
+    }
+
+    .sparkles {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: white;
+      border-radius: 50%;
+      box-shadow: 0 0 12px white, 0 0 22px rgba(255,255,255,0.9);
+      animation: twinkle 2.5s infinite ease-in-out;
+    }
+
+    .sparkle:nth-child(1) { top: 12%; left: 10%; animation-delay: 0s; }
+    .sparkle:nth-child(2) { top: 20%; left: 80%; animation-delay: 0.7s; }
+    .sparkle:nth-child(3) { top: 35%; left: 18%; animation-delay: 1.1s; }
+    .sparkle:nth-child(4) { top: 42%; left: 88%; animation-delay: 1.8s; }
+    .sparkle:nth-child(5) { top: 58%; left: 8%; animation-delay: 0.4s; }
+    .sparkle:nth-child(6) { top: 68%; left: 76%; animation-delay: 1.4s; }
+    .sparkle:nth-child(7) { top: 78%; left: 25%; animation-delay: 0.9s; }
+    .sparkle:nth-child(8) { top: 84%; left: 62%; animation-delay: 1.9s; }
+
+    @keyframes twinkle {
+      0%, 100% {
+        transform: scale(0.6);
+        opacity: 0.45;
+      }
+      50% {
+        transform: scale(1.5);
+        opacity: 1;
+      }
     }
 
     .card {
-      background: white;
-      padding: 20px;
-      border-radius: 18px;
-      text-align: center;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      position: relative;
+      z-index: 3;
       width: 100%;
-      max-width: 420px;
+      max-width: 520px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.97), rgba(255,248,252,0.96));
+      border: 6px solid #fff;
+      border-radius: 34px;
+      padding: 24px 20px 30px;
+      text-align: center;
+      box-shadow:
+        0 18px 60px rgba(0,0,0,0.22),
+        0 0 0 8px rgba(255,255,255,0.22),
+        0 0 40px rgba(255,255,255,0.45);
+      animation: cardPop 0.9s ease;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.55) 50%, transparent 100%);
+      transform: translateX(-120%);
+      animation: shine 5s linear infinite;
+      pointer-events: none;
+    }
+
+    @keyframes shine {
+      100% {
+        transform: translateX(120%);
+      }
+    }
+
+    @keyframes cardPop {
+      0% {
+        transform: scale(0.9) translateY(20px);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1) translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .top-banner {
+      display: inline-block;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #ff4d8d, #ff9f43);
+      color: white;
+      font-weight: 900;
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      box-shadow: 0 8px 22px rgba(255, 90, 140, 0.35);
+      margin-bottom: 16px;
+    }
+
+    .crown {
+      font-size: clamp(38px, 10vw, 58px);
+      line-height: 1;
+      margin-bottom: 8px;
+      animation: bounceCrown 2.2s infinite;
+      display: block;
+    }
+
+    @keyframes bounceCrown {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-6px) rotate(-4deg); }
     }
 
     h1 {
-      color: #ff4f87;
-      margin: 0 0 10px;
-      font-size: clamp(22px, 6vw, 30px);
-      line-height: 1.2;
+      margin: 0;
+      font-size: clamp(2rem, 8vw, 3.3rem);
+      line-height: 1;
+      font-weight: 1000;
+      color: #ff2d75;
+      text-shadow:
+        0 2px 0 #fff,
+        0 4px 12px rgba(255, 77, 141, 0.25);
     }
 
-    p {
-      color: #555;
-      font-size: clamp(14px, 4vw, 18px);
-      margin-bottom: 15px;
+    .subtitle {
+      margin: 14px auto 18px;
+      font-size: clamp(1rem, 4.2vw, 1.2rem);
+      color: #7a3354;
+      font-weight: 700;
+      max-width: 420px;
     }
 
-    img {
+    .photo-wrap {
+      position: relative;
+      width: min(100%, 330px);
+      margin: 0 auto 18px;
+      padding: 10px;
+      border-radius: 28px;
+      background: linear-gradient(135deg, #ffd700, #fff6b0, #ff8fab);
+      box-shadow:
+        0 12px 28px rgba(255, 141, 171, 0.35),
+        0 0 0 4px rgba(255,255,255,0.7);
+      animation: photoGlow 2.8s ease-in-out infinite;
+    }
+
+    @keyframes photoGlow {
+      0%, 100% { transform: scale(1); box-shadow: 0 12px 28px rgba(255, 141, 171, 0.35), 0 0 0 4px rgba(255,255,255,0.7); }
+      50% { transform: scale(1.02); box-shadow: 0 18px 40px rgba(255, 141, 171, 0.45), 0 0 0 6px rgba(255,255,255,0.9); }
+    }
+
+    .photo-wrap img {
+      display: block;
       width: 100%;
-      max-width: 300px;
-      border-radius: 14px;
-      border: 4px solid gold;
+      aspect-ratio: 4 / 5;
       object-fit: cover;
+      border-radius: 22px;
+      border: 5px solid white;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    }
+
+    .award-stamp {
+      position: absolute;
+      right: -8px;
+      bottom: -8px;
+      width: 92px;
+      height: 92px;
+      background: radial-gradient(circle, #fff8c8 0%, #ffd700 60%, #ffb700 100%);
+      border: 4px solid white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #b04100;
+      font-size: 0.8rem;
+      font-weight: 1000;
+      text-transform: uppercase;
+      line-height: 1.05;
+      transform: rotate(-15deg);
+      box-shadow: 0 10px 18px rgba(0,0,0,0.16);
+      padding: 10px;
+    }
+
+    .facts {
+      display: grid;
+      gap: 12px;
+      margin-top: 20px;
+    }
+
+    .fact {
+      background: linear-gradient(90deg, rgba(255,112,166,0.12), rgba(255,214,102,0.18));
+      border: 2px solid rgba(255,255,255,0.85);
+      border-radius: 18px;
+      padding: 14px 12px;
+      color: #7a3354;
+      font-weight: 800;
+      font-size: clamp(0.95rem, 3.8vw, 1.05rem);
+      box-shadow: 0 8px 18px rgba(255, 145, 180, 0.14);
+    }
+
+    .button-row {
+      display: flex;
+      justify-content: center;
+      margin-top: 22px;
     }
 
     button {
-      margin-top: 15px;
-      padding: 12px 16px;
       border: none;
-      border-radius: 10px;
-      background: #ff4f87;
+      border-radius: 999px;
+      padding: 14px 22px;
+      background: linear-gradient(90deg, #ff2d75, #ff8a00);
       color: white;
-      font-size: clamp(14px, 4vw, 16px);
-      font-weight: bold;
+      font-size: 1rem;
+      font-weight: 1000;
+      letter-spacing: 0.4px;
       cursor: pointer;
-      width: 100%;
-      max-width: 250px;
+      box-shadow: 0 12px 24px rgba(255, 78, 128, 0.35);
+      transition: transform 0.18s ease, box-shadow 0.18s ease;
     }
 
-    button:hover {
-      background: #e33d74;
+    button:hover,
+    button:active {
+      transform: scale(1.06);
+      box-shadow: 0 18px 30px rgba(255, 78, 128, 0.42);
     }
 
-    /* Confetti */
+    .footer-note {
+      margin-top: 18px;
+      color: #9b4d69;
+      font-size: 0.9rem;
+      font-weight: 700;
+    }
+
     .confetti {
       position: fixed;
-      top: -12px;
-      width: 10px;
-      height: 18px;
-      opacity: 0.9;
+      top: -14px;
+      z-index: 2;
+      pointer-events: none;
+      border-radius: 3px;
       animation: fall linear forwards;
-      z-index: 1;
     }
 
     @keyframes fall {
       0% {
         transform: translateY(-10vh) rotate(0deg);
+        opacity: 1;
       }
       100% {
-        transform: translateY(110vh) rotate(720deg);
+        transform: translateY(115vh) rotate(780deg);
+        opacity: 0.9;
       }
     }
 
-    /* Extra mobile tweaks */
-    @media (max-width: 480px) {
-      .card {
-        padding: 16px;
-        border-radius: 14px;
+    @media (max-width: 600px) {
+      body {
+        padding: 14px;
+        align-items: center;
       }
 
-      img {
-        max-width: 260px;
+      .card {
+        padding: 18px 14px 24px;
+        border-radius: 26px;
+      }
+
+      .award-stamp {
+        width: 76px;
+        height: 76px;
+        font-size: 0.65rem;
+        right: -4px;
+        bottom: -4px;
+      }
+
+      .fact {
+        border-radius: 14px;
+        padding: 12px 10px;
+      }
+
+      button {
+        width: 100%;
+        max-width: 280px;
       }
     }
   </style>
 </head>
-
 <body>
+  <div class="background-glow"></div>
+
+  <div class="hearts">
+    <div class="heart">💖</div>
+    <div class="heart">💕</div>
+    <div class="heart">💗</div>
+    <div class="heart">💘</div>
+    <div class="heart">💖</div>
+    <div class="heart">💞</div>
+    <div class="heart">💓</div>
+    <div class="heart">💕</div>
+  </div>
+
+  <div class="sparkles">
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+    <div class="sparkle"></div>
+  </div>
+
   <div class="card">
-    <h1>🏆 World's Best Girlfriend 🏆</h1>
-    <p>Officially certified 💯</p>
+    <div class="top-banner">Certified Since Forever</div>
+    <span class="crown">👑</span>
 
-    <img src="emma.png" alt="Best Girlfriend" />
+    <h1>World's Best Girlfriend</h1>
 
-    <br />
-    <button onclick="dropConfetti(120)">Celebrate 🎉</button>
+    <div class="subtitle">
+      After extensive research, testing, reviewing, and absolutely zero debate,
+      this award goes to Emma.
+    </div>
+
+    <div class="photo-wrap">
+      <img src="emma.png" alt="Emma - World's Best Girlfriend" />
+      <div class="award-stamp">100% Official</div>
+    </div>
+
+    <div class="facts">
+      <div class="fact">🏆 Undefeated in being iconic</div>
+      <div class="fact">✨ Elite level girlfriend energy</div>
+      <div class="fact">💖 First ballot Hall of Fame selection</div>
+    </div>
+
+    <div class="button-row">
+      <button onclick="dropConfetti(180)">Celebrate Emma 🎉</button>
+    </div>
+
+    <div class="footer-note">
+      Verified by advanced boyfriend science.
+    </div>
   </div>
 
   <script>
-    const colors = ["#ff4f87", "#ffd700", "#7dd3fc", "#86efac", "#c084fc", "#fb7185"];
+    const colors = [
+      "#ff2d75", "#ffd700", "#7dd3fc", "#86efac",
+      "#c084fc", "#fb7185", "#ffffff", "#ff9f43"
+    ];
 
     function createConfettiPiece() {
       const piece = document.createElement("div");
       piece.className = "confetti";
 
-      const size = Math.random() * 8 + 6;
+      const size = Math.random() * 10 + 7;
       piece.style.width = size + "px";
-      piece.style.height = size * 1.6 + "px";
+      piece.style.height = size * 1.7 + "px";
       piece.style.left = Math.random() * window.innerWidth + "px";
       piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-      piece.style.animationDuration = (Math.random() * 2 + 2) + "s";
+      piece.style.animationDuration = (Math.random() * 2 + 2.4) + "s";
+      piece.style.transform = `rotate(${Math.random() * 360}deg)`;
 
       document.body.appendChild(piece);
 
-      setTimeout(() => piece.remove(), 4000);
+      setTimeout(() => {
+        piece.remove();
+      }, 5000);
     }
 
-    function dropConfetti(amount = 100) {
+    function dropConfetti(amount = 120) {
       for (let i = 0; i < amount; i++) {
-        setTimeout(createConfettiPiece, i * 20);
+        setTimeout(createConfettiPiece, i * 18);
       }
     }
 
     window.addEventListener("load", () => {
-      dropConfetti(100);
+      dropConfetti(160);
+
+      setInterval(() => {
+        dropConfetti(28);
+      }, 2800);
     });
   </script>
 </body>
