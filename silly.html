@@ -3,6 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>World's Best Girlfriend Award</title>
+
+  <!-- Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
   <style>
     body {
       margin: 0;
@@ -12,6 +16,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      overflow: hidden;
     }
 
     .card {
@@ -20,6 +25,7 @@
       border-radius: 20px;
       text-align: center;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      z-index: 2;
     }
 
     h1 {
@@ -32,12 +38,64 @@
       border-radius: 15px;
       border: 5px solid gold;
     }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 10px;
+      background: #ff4f87;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #e63e74;
+    }
   </style>
 </head>
 <body>
+
   <div class="card">
     <h1>🏆 World's Best Girlfriend 🏆</h1>
+    <p>Officially certified 💯</p>
     <img src="emma.png" alt="Best Girlfriend">
+
+    <br>
+    <button onclick="launchConfetti()">Celebrate 🎉</button>
   </div>
+
+  <script>
+    function launchConfetti() {
+      var duration = 3 * 1000;
+      var end = Date.now() + duration;
+
+      (function frame() {
+        confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 }
+        });
+        confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 }
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      })();
+    }
+
+    // Auto launch on page load too
+    window.onload = () => {
+      launchConfetti();
+    };
+  </script>
+
 </body>
 </html>
