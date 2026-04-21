@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>World's Best Girlfriend Award</title>
+
   <style>
     body {
       margin: 0;
@@ -14,55 +15,59 @@
       align-items: center;
       min-height: 100vh;
       overflow: hidden;
-      position: relative;
+      padding: 15px;
     }
 
     .card {
       background: white;
-      padding: 30px;
-      border-radius: 20px;
+      padding: 20px;
+      border-radius: 18px;
       text-align: center;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      max-width: 500px;
-      width: 90%;
-      position: relative;
-      z-index: 2;
+      width: 100%;
+      max-width: 420px;
     }
 
     h1 {
       color: #ff4f87;
-      margin-bottom: 10px;
+      margin: 0 0 10px;
+      font-size: clamp(22px, 6vw, 30px);
+      line-height: 1.2;
     }
 
     p {
       color: #555;
-      font-size: 18px;
-      margin-bottom: 20px;
+      font-size: clamp(14px, 4vw, 18px);
+      margin-bottom: 15px;
     }
 
     img {
       width: 100%;
-      max-width: 320px;
-      border-radius: 15px;
-      border: 5px solid gold;
+      max-width: 300px;
+      border-radius: 14px;
+      border: 4px solid gold;
+      object-fit: cover;
     }
 
     button {
-      margin-top: 20px;
-      padding: 12px 18px;
+      margin-top: 15px;
+      padding: 12px 16px;
       border: none;
       border-radius: 10px;
       background: #ff4f87;
       color: white;
-      font-size: 16px;
+      font-size: clamp(14px, 4vw, 16px);
       font-weight: bold;
       cursor: pointer;
+      width: 100%;
+      max-width: 250px;
     }
 
     button:hover {
       background: #e33d74;
     }
 
+    /* Confetti */
     .confetti {
       position: fixed;
       top: -12px;
@@ -81,13 +86,28 @@
         transform: translateY(110vh) rotate(720deg);
       }
     }
+
+    /* Extra mobile tweaks */
+    @media (max-width: 480px) {
+      .card {
+        padding: 16px;
+        border-radius: 14px;
+      }
+
+      img {
+        max-width: 260px;
+      }
+    }
   </style>
 </head>
+
 <body>
   <div class="card">
-    <h1>🏆 World's Best Girlfriend Award 🏆</h1>
-    <p>Officially certified as the best girlfriend ever.</p>
-    <img src="emma.png" alt="Best Girlfriend" />
+    <h1>🏆 World's Best Girlfriend 🏆</h1>
+    <p>Officially certified 💯</p>
+
+    <img src="girlfriend.jpg" alt="Best Girlfriend" />
+
     <br />
     <button onclick="dropConfetti(120)">Celebrate 🎉</button>
   </div>
@@ -99,28 +119,25 @@
       const piece = document.createElement("div");
       piece.className = "confetti";
 
-      const size = Math.random() * 10 + 6;
+      const size = Math.random() * 8 + 6;
       piece.style.width = size + "px";
       piece.style.height = size * 1.6 + "px";
       piece.style.left = Math.random() * window.innerWidth + "px";
       piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
       piece.style.animationDuration = (Math.random() * 2 + 2) + "s";
-      piece.style.transform = `rotate(${Math.random() * 360}deg)`;
 
       document.body.appendChild(piece);
 
-      setTimeout(() => {
-        piece.remove();
-      }, 4500);
+      setTimeout(() => piece.remove(), 4000);
     }
 
     function dropConfetti(amount = 100) {
       for (let i = 0; i < amount; i++) {
-        setTimeout(createConfettiPiece, i * 25);
+        setTimeout(createConfettiPiece, i * 20);
       }
     }
 
-    window.addEventListener("load", function () {
+    window.addEventListener("load", () => {
       dropConfetti(100);
     });
   </script>
