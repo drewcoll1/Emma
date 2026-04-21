@@ -1,12 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>World's Best Girlfriend Award</title>
-
-  <!-- Confetti Library -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
   <style>
     body {
       margin: 0;
@@ -15,8 +12,9 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       overflow: hidden;
+      position: relative;
     }
 
     .card {
@@ -25,6 +23,9 @@
       border-radius: 20px;
       text-align: center;
       box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      max-width: 500px;
+      width: 90%;
+      position: relative;
       z-index: 2;
     }
 
@@ -33,69 +34,95 @@
       margin-bottom: 10px;
     }
 
+    p {
+      color: #555;
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
     img {
-      width: 300px;
+      width: 100%;
+      max-width: 320px;
       border-radius: 15px;
       border: 5px solid gold;
     }
 
     button {
-      margin-top: 15px;
-      padding: 10px 15px;
+      margin-top: 20px;
+      padding: 12px 18px;
       border: none;
       border-radius: 10px;
       background: #ff4f87;
       color: white;
+      font-size: 16px;
       font-weight: bold;
       cursor: pointer;
     }
 
     button:hover {
-      background: #e63e74;
+      background: #e33d74;
+    }
+
+    .confetti {
+      position: fixed;
+      top: -12px;
+      width: 10px;
+      height: 18px;
+      opacity: 0.9;
+      animation: fall linear forwards;
+      z-index: 1;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-10vh) rotate(0deg);
+      }
+      100% {
+        transform: translateY(110vh) rotate(720deg);
+      }
     }
   </style>
 </head>
 <body>
-
   <div class="card">
-    <h1>🏆 World's Best Girlfriend 🏆</h1>
-    <p>Officially certified 💯</p>
-    <img src="emma.png" alt="Best Girlfriend">
-
-    <br>
-    <button onclick="launchConfetti()">Celebrate 🎉</button>
+    <h1>🏆 World's Best Girlfriend Award 🏆</h1>
+    <p>Officially certified as the best girlfriend ever.</p>
+    <img src="emma.png" alt="Best Girlfriend" />
+    <br />
+    <button onclick="dropConfetti(120)">Celebrate 🎉</button>
   </div>
 
   <script>
-    function launchConfetti() {
-      var duration = 3 * 1000;
-      var end = Date.now() + duration;
+    const colors = ["#ff4f87", "#ffd700", "#7dd3fc", "#86efac", "#c084fc", "#fb7185"];
 
-      (function frame() {
-        confetti({
-          particleCount: 5,
-          angle: 60,
-          spread: 55,
-          origin: { x: 0 }
-        });
-        confetti({
-          particleCount: 5,
-          angle: 120,
-          spread: 55,
-          origin: { x: 1 }
-        });
+    function createConfettiPiece() {
+      const piece = document.createElement("div");
+      piece.className = "confetti";
 
-        if (Date.now() < end) {
-          requestAnimationFrame(frame);
-        }
-      })();
+      const size = Math.random() * 10 + 6;
+      piece.style.width = size + "px";
+      piece.style.height = size * 1.6 + "px";
+      piece.style.left = Math.random() * window.innerWidth + "px";
+      piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+      piece.style.animationDuration = (Math.random() * 2 + 2) + "s";
+      piece.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+      document.body.appendChild(piece);
+
+      setTimeout(() => {
+        piece.remove();
+      }, 4500);
     }
 
-    // Auto launch on page load too
-    window.onload = () => {
-      launchConfetti();
-    };
-  </script>
+    function dropConfetti(amount = 100) {
+      for (let i = 0; i < amount; i++) {
+        setTimeout(createConfettiPiece, i * 25);
+      }
+    }
 
+    window.addEventListener("load", function () {
+      dropConfetti(100);
+    });
+  </script>
 </body>
 </html>
